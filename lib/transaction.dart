@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'inputbox.dart';
 import 'dropdown.dart';
+import 'datepicker.dart';
+import 'login.dart';
 
 class Transaction extends StatelessWidget {
   @override
@@ -14,23 +16,23 @@ class Transaction extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('TITLE', 50),
+            child: Inputbox('TITLE', 60),
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('AMOUNT', 50),
+            child: Inputbox('AMOUNT', 60),
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('TYPE', 50),
+            child: Inputbox('TYPE', 60),
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('RECURRECE', 50),
+            child: Inputbox('RECURRECE', 60),
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('DATE', 50),
+            child: DateTimePicker(),
           ),
           Padding(
             padding: EdgeInsets.all(0),
@@ -41,8 +43,38 @@ class Transaction extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: Inputbox('NOTE', 50),
+            child: Inputbox('NOTE', 60),
           ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Container(
+                  width: 100,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: MaterialButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
+                      },
+                      child: Text('CREATE',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ))),
+                ),
+              )
+            ],
+          )
         ],
       )),
     );

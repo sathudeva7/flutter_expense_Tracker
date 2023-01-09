@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-// Add this import statement
 
-class DatePicker extends StatefulWidget {
+class DateTimePicker extends StatefulWidget {
+  const DateTimePicker({Key? key}) : super(key: key);
+
   @override
-  _DatePickerState createState() => _DatePickerState();
+  DateTimePickerState createState() => DateTimePickerState();
 }
 
-class _DatePickerState extends State<DatePicker> {
-  // Declare a variable to store the selected date
-  DateTime? _selectedDate;
+class DateTimePickerState extends State<DateTimePicker> {
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
-  // Use this function to show the date picker and update the selected date
-  void _selectDate() async {
-     DateTime? picked = await showDatePicker(
+  void _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
+      initialDate: _selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
@@ -26,51 +25,51 @@ class _DatePickerState extends State<DatePicker> {
     }
   }
 
+  void _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          margin: EdgeInsets.all(8.0),
-          padding: EdgeInsets.all(8.0),
-          height: 50.0,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          child: TextField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration.collapsed(
-              hintText: 'Title',
-              hintStyle: TextStyle(color: Colors.white),
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Container(
+            height: 50,
+            width: 360,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: MaterialButton(
+              onPressed: () => _selectDate(context),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    _selectedDate == DateTime.now()
+                        ? 'Select Date'
+                        : '${_selectedDate.toString()}'.split(' ')[0],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.all(8.0),
-          padding: EdgeInsets.all(8.0),
-          height: 50.0,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          child: TextField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration.collapsed(
-              hintText: 'Address',
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        // Add a button to select the date
-        MaterialButton(
-          onPressed: _selectDate,
-          child: Text(
-            _selectedDate == null
-                ? 'Select Date' 
-                : DateFormat('yyyy-MM-dd').format(_selectedDate),
-          ),
-        ),
+        )
       ],
     );
   }
